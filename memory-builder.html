@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💣 Hack Escape – PassQuest</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --primary-color: #4a90e2;
+      --accent-color: #ff5555;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: var(--primary-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: #1e1e1e;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .timer {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+
+    select, input[type="text"] {
+      padding: 0.6rem;
+      width: 60%;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background-color: #2b2b2b;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .hint {
+      margin-top: 1rem;
+      font-style: italic;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2 style="margin: 0; color: white;">PassQuest</h2>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="games.html">Games</a>
+      <a href="progression.html">Progression</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>💣 Hack Escape</h1>
+    <p id="scenario">You’re trapped inside a hacked server room! 🔒 The only way out is to decrypt the system password using clues hidden in the hint below. You have 30 seconds!</p>
+
+    <label for="level">Select Difficulty:</label><br>
+    <select id="level" onchange="setScenarioAndPassword()">
+      <option value="very-easy">Very Easy</option>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+      <option value="very-hard">Very Hard</option>
+    </select>
+
+    <div class="timer" id="timer">⏱️ Time Left: 30s</div>
+    <input type="text" id="answer" placeholder="Enter password here..." />
+    <br>
+    <button onclick="checkAnswer()">Unlock</button>
+    <div class="hint" id="hint"></div>
+    <button onclick="revealPassword()">🔍 Show Password</button>
+    <div class="hint" id="reveal"></div>
+    <button onclick="restartGame()">🔄 Restart Game</button>
+  </div>
+
+  <script>
+    const scenarios = {
+      'very-easy': "You're locked out of your tablet in a library. It asks for your favorite color and a lucky number.",
+      'easy': "You're in a public WiFi café. The system auto-locks every 30 seconds unless the correct pass is typed.",
+      'medium': "You’re in a digital vault. A password generator is broken, but one backup phrase exists. Use the clues!",
+      'hard': "You’re inside a rogue AI core. It scrambles input unless the master override phrase is entered precisely.",
+      'very-hard': "You're in a blacksite facility. The biometric scan failed. Only a cyber-encrypted master key can save you."
+    };
+
+    const passwords = {
+      'very-easy': "blue7",
+      'easy': "wifiSafe123",
+      'medium': "Lock3r#Vault",
+      'hard': "AIC0re$X9",
+      'very-hard': "XenoCrypt@2049"
+    };
+
+    const hints = {
+      'very-easy': "Hint: Your tablet wallpaper is a calming ocean blue, and your locker number is 7. Think like your younger self.",
+      'easy': "Hint: You often use 'wifi' in your passwords for hotspots and always feel safer adding 'Safe' followed by your birth year — 123.",
+      'medium': "Hint: You store valuables in a locker. Combine that with the digital vault’s name from the sticker you saw: 'Vault'. Add a symbol in between.",
+      'hard': "Hint: The AI core speaks in riddles. You saw a sticky note saying 'AI Core override = AIC0re$X9'. Could it be that simple?", 
+      'very-hard': "Hint: You remember the codename from a top-secret file: 'XenoCrypt'. The access code had a year: 2049. Add @ like in passwords."
+    };
+
+    let timeLeft = 30;
+    let timer;
+    let currentLevel = "easy";
+
+    function setScenarioAndPassword() {
+      currentLevel = document.getElementById("level").value;
+      document.getElementById("scenario").textContent = scenarios[currentLevel];
+      document.getElementById("hint").textContent = hints[currentLevel];
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timeLeft = 30;
+      document.getElementById("timer").textContent = `⏱️ Time Left: ${timeLeft}s`;
+      document.getElementById("hint").textContent = hints[currentLevel];
+      document.getElementById("answer").disabled = false;
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").textContent = `⏱️ Time Left: ${timeLeft}s`;
+        if (timeLeft === 0) {
+          clearInterval(timer);
+          alert("💥 Time's up! You failed to escape.");
+          document.getElementById("answer").disabled = true;
+        }
+      }, 1000);
+    }
+
+    function checkAnswer() {
+      const input = document.getElementById("answer").value;
+      if (input === passwords[currentLevel]) {
+        clearInterval(timer);
+        alert("✅ Access granted! You’ve escaped the hack zone!");
+        document.getElementById("answer").disabled = true;
+      } else {
+        alert("❌ Incorrect! Try again quickly!");
+      }
+    }
+
+    window.onload = () => {
+      setScenarioAndPassword();
+    };
+
+    function revealPassword() {
+      document.getElementById("reveal").textContent = `🔓 Password: ${passwords[currentLevel]}`;
+    }
+
+    function restartGame() {
+      document.getElementById("answer").value = "";
+      document.getElementById("reveal").textContent = "";
+      setScenarioAndPassword();
+    }
+  // Optional: Play sound when access granted or denied
+  const successSound = new Audio('success.mp3');
+  const failSound = new Audio('fail.mp3');
+
+  function checkAnswer() {
+    const input = document.getElementById("answer").value;
+    if (input === passwords[currentLevel]) {
+      clearInterval(timer);
+      successSound.play();
+      alert("✅ Access granted! You’ve escaped the hack zone!");
+      document.getElementById("answer").disabled = true;
+    } else {
+      failSound.play();
+      alert("❌ Incorrect! Try again quickly!");
+    }
+  }
+
+  // Optional story intro
+  window.onload = () => {
+    alert("🕵️ Welcome Agent. Each level represents a case. Your task is to decipher the correct password using the hint and escape in 30 seconds.");
+    setScenarioAndPassword();
+  };
+</script>
+</body>
+</html>

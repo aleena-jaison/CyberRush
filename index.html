@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PassQuest – The Password Adventure</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --primary-color: #4a90e2;
+      --card-bg: #1e1e1e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    section {
+      padding: 2rem;
+    }
+
+    #hero {
+      background: linear-gradient(145deg, #1e1e1e, #263238);
+      text-align: center;
+      padding: 5rem 2rem;
+    }
+
+    #hero h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    #hero p {
+      font-size: 1.2rem;
+    }
+
+    #hero .button-group {
+      margin-top: 2rem;
+    }
+
+    #hero .button-group a {
+      margin: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      nav a {
+        margin: 0.5rem;
+      }
+
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      #hero h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔐 PassQuest</h1>
+    <nav>
+      <a href="features.html">Features</a>
+      <a href="games.html">Games</a>
+      <a href="progression.html">Progression</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section id="hero">
+    <h2>Welcome to PassQuest</h2>
+    <p>Transform your digital safety with gamified password learning!</p>
+    <div class="button-group">
+      <a href="features.html">Explore Features</a>
+      <a href="games.html">Play Games</a>
+      <a href="progression.html">View Progression</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 PassQuest Team</p>
+  </footer>
+</body>
+</html>

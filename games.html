@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Games – PassQuest</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --primary-color: #4a90e2;
+      --card-bg: #1e1e1e;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: var(--primary-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: white;
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .games-section {
+      padding: 3rem 2rem;
+    }
+
+    .games-section h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00000050;
+    }
+
+    .game-card h3 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+
+    .game-card p {
+      line-height: 1.6;
+    }
+
+    .game-card button {
+      padding: 0.5rem 1.25rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+      .game-card-button {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      background-color: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PassQuest</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="progression.html">Progression</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="games-section">
+    <h2>🎮 Game Center</h2>
+
+    <div class="game-card">
+      <h3>🧠 Memory Builder</h3>
+      <p>Think you’ve got a sharp memory?
+Memory Builder is a fast-paced, brainy little game that puts your memory to the test — while teaching you how strong passwords are built!
+
+🔍 You’ll be shown a passphrase made of words, numbers & symbols for a few seconds...
+🧩 Then, boom! It disappears — and you're left with a jumbled puzzle to rebuild it!
+
+Each level gets trickier:
+
+🟢 Easy – simple, short passphrases
+
+🟡 Medium – more words & special characters
+
+🔴 Hard – complex patterns that really make you think!
+
+Lets goo!!
+</p>
+      <a href="memory-builder.html" class="game-card-button">Play</a>
+    </div>
+
+    <div class="game-card">
+      <h3>🔧 Password Lab</h3>
+      <p>Create powerful passwords using colors, emojis, animals, and more — then test their strength!
+
+        Ready to level up your password game?
+Password Lab is an interactive tool that lets you create and test your own password — while earning badges based on strength!
+
+💡 As you type, the lab gives live feedback on how strong your password is:
+
+Length ✔️
+
+Capital & small letters ✔️
+
+Numbers & symbols ✔️
+
+Difficulty to guess ✔️
+
+Walking to the lab!!
+      </p>
+      <a href="password-lab.html" class="game-card-button">Try Now</a>
+    </div>
+
+    <div class="game-card">
+      <h3>💣 Hack Escape Challenge</h3>
+      <p>Spot the weak password and escape the cyber attack. A race against time to test your skills!
+
+        Imagine being locked in a virtual room...
+The only way out? Guess the correct password hidden in clues around you. 😱
+
+Hack Escape is a story-based game where every level is a mini adventure:
+
+🧱 You're stuck in a lab, a dungeon, or a data vault
+
+🔎 You must solve puzzles, decode clues, and test passwords
+
+⏳ Each level has a timer — or the trap locks you in forever!
+
+Escape to live!! 
+      </p>
+      <a href="hack-escape.html" class="game-card-button">Start Game</a>
+    </div>
+
+    <div class="game-card">
+      <h3>🧩 PassPattern Puzzle</h3>
+      <p>Use smart patterns like "Red$Netflix22" to generate unique, memorable passwords for any site.
+
+        Get ready for a thrilling challenge!
+PassPattern Puzzle gives you password-style riddles, clues, and logic puzzles that make you think like a hacker (but for good!).
+
+🧠 Choose your level — Easy, Medium, Hard — and solve puzzles based on:
+
+🧩 Word patterns
+
+🔢 Numbers & symbols
+
+💡 Clues that lead to a realistic password
+
+⏱️ You’ve got limited time and only a few chances...
+
+Puzzlesoff!!
+      </p>
+      <a href="passpattern.html" class="game-card-button">Solve Puzzle</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 PassQuest Team</p>
+  </footer>
+</body>
+</html>

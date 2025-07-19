@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PassPattern Puzzle – PassQuest</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --card-bg: #1e1e1e;
+      --btn-bg: #333;
+      --btn-hover: #555;
+      --accent: #4fc3f7;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: #004080;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      margin: 40px auto;
+      max-width: 600px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      margin-top: 10px;
+      width: 80%;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: var(--accent);
+      color: black;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #29b6f6;
+      transform: scale(1.05);
+    }
+
+    #feedback, #answerReveal {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    #timer {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: var(--accent);
+    }
+
+    #badge {
+      margin-top: 15px;
+      font-weight: bold;
+      color: gold;
+    }
+
+    #answerReveal {
+      color: #f06292;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2 style="margin: 0; color: white;">PassQuest</h2>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="games.html">Games</a>
+      <a href="progression.html">Progression</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="card">
+    <h1>🧩 PassPattern Puzzle</h1>
+    <label for="difficulty">Choose Difficulty:</label>
+    <select id="difficulty" onchange="startGame()">
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+
+    <div id="timer">⏱️ Time Left: 30s</div>
+    <p id="question"></p>
+    <input type="text" id="answer" placeholder="Your answer here...">
+    <br>
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="feedback"></p>
+    <p id="badge"></p>
+    <p id="answerReveal"></p>
+    <button onclick="nextPuzzle()">➡️ Next Puzzle</button>
+  </div>
+
+  <script>
+    const allPuzzles = {
+      easy: [
+        { question: `🧠 Hint: A simple word with a lucky number`, answer: "sun7" },
+        { question: `🧠 Hint: Three-letter animal with 123`, answer: "cat123" },
+        { question: `🧠 Hint: A fruit and its price`, answer: "apple5" },
+        { question: `🧠 Hint: A day + one digit`, answer: "mon3" },
+        { question: `🧠 Hint: Sky color + 1`, answer: "blue1" },
+        { question: `🧠 Hint: Short animal + number`, answer: "dog4" },
+        { question: `🧠 Hint: Color + single digit`, answer: "red2" },
+        { question: `🧠 Hint: Small number after sun`, answer: "sun3" },
+        { question: `🧠 Hint: First name of a planet`, answer: "mars" },
+        { question: `🧠 Hint: Opposite of cold + 9`, answer: "hot9" }
+      ],
+      medium: [
+        { question: `🧠 Hint: Color + object + symbol`, answer: "redbox@" },
+        { question: `🧠 Hint: Animal + 2-digit year`, answer: "lion22" },
+        { question: `🧠 Hint: Verb + symbol + digit`, answer: "run#3" },
+        { question: `🧠 Hint: Two syllables and one digit`, answer: "happy7" },
+        { question: `🧠 Hint: A short name + birth year`, answer: "raj04" },
+        { question: `🧠 Hint: Keyboard symbol + name`, answer: "@mike" },
+        { question: `🧠 Hint: Month abbreviation + number`, answer: "jan5" },
+        { question: `🧠 Hint: Uppercase letter, name, number`, answer: "Ravi8" },
+        { question: `🧠 Hint: Something you wear + 4`, answer: "hat4" },
+        { question: `🧠 Hint: Tech word + !`, answer: "data!" }
+      ],
+      hard: [
+        { question: `🧠 Hint: Code word using numbers and case`, answer: "X7a#92" },
+        { question: `🧠 Hint: Abbreviation + symbol + digits`, answer: "IT@404" },
+        { question: `🧠 Hint: Complex password with caps + digit`, answer: "CyberX1" },
+        { question: `🧠 Hint: Short phrase with !`, answer: "Go2Work!" },
+        { question: `🧠 Hint: Mixed case + symbol`, answer: "qWe#3r" },
+        { question: `🧠 Hint: Hacker-style alias`, answer: "N1nj@42" },
+        { question: `🧠 Hint: Symbol + tech + number`, answer: "#AI99" },
+        { question: `🧠 Hint: Encrypted look, ends in digit`, answer: "zX$92" },
+        { question: `🧠 Hint: Shorthand word with underscore`, answer: "dev_21" },
+        { question: `🧠 Hint: AlphaSymbolMix`, answer: "R3@ctX" }
+      ]
+    };
+
+    let shuffledPuzzles = [];
+    let currentIndex = 0;
+    let timer;
+    let timeLeft = 30;
+    let difficulty = 'easy';
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function startGame() {
+      clearInterval(timer);
+      difficulty = document.getElementById("difficulty").value;
+      currentIndex = 0;
+      timeLeft = 30;
+      shuffledPuzzles = [...allPuzzles[difficulty]];
+      shuffle(shuffledPuzzles);
+      document.getElementById("answerReveal").style.display = 'none';
+      loadPuzzle();
+      startTimer();
+    }
+
+    function loadPuzzle() {
+      const puzzle = shuffledPuzzles[currentIndex];
+      document.getElementById("question").textContent = puzzle.question;
+      document.getElementById("answer").value = "";
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("badge").textContent = "";
+      document.getElementById("answerReveal").style.display = 'none';
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById("answer").value.trim();
+      const correctAnswer = shuffledPuzzles[currentIndex].answer;
+      const feedback = document.getElementById("feedback");
+      const badge = document.getElementById("badge");
+
+      if (userAnswer === correctAnswer) {
+        feedback.textContent = "✅ Correct! Moving to next...";
+        badge.textContent = `🏅 Badge Earned: Logic Solver (${difficulty})`;
+        storeBadge(`Logic Solver (${difficulty})`);
+        currentIndex = (currentIndex + 1) % shuffledPuzzles.length;
+        setTimeout(() => {
+          timeLeft = 30;
+          loadPuzzle();
+        }, 1500);
+      } else {
+        feedback.textContent = "❌ Incorrect. Try again.";
+        document.getElementById("answerReveal").textContent = `🔍 Answer: ${correctAnswer}`;
+        document.getElementById("answerReveal").style.display = 'block';
+      }
+    }
+
+    function startTimer() {
+      const timerDisplay = document.getElementById("timer");
+      clearInterval(timer);
+      timer = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `⏱️ Time Left: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          document.getElementById("feedback").textContent = "⏱️ Time's up! Try the next one.";
+          document.getElementById("badge").textContent = "";
+          document.getElementById("answerReveal").textContent = `🔍 Answer: ${shuffledPuzzles[currentIndex].answer}`;
+          document.getElementById("answerReveal").style.display = 'block';
+        }
+      }, 1000);
+    }
+
+    function storeBadge(badgeName) {
+      let badges = JSON.parse(localStorage.getItem('badges') || '[]');
+      if (!badges.includes(badgeName)) {
+        badges.push(badgeName);
+        localStorage.setItem('badges', JSON.stringify(badges));
+      }
+    }
+
+    function nextPuzzle() {
+      clearInterval(timer);
+      currentIndex = (currentIndex + 1) % shuffledPuzzles.length;
+      timeLeft = 30;
+      loadPuzzle();
+      startTimer();
+    }
+
+    window.onload = startGame;
+  </script>
+</body>
+</html>
