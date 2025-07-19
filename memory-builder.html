@@ -1,218 +1,234 @@
+<!-- Full updated HTML code with 10 puzzles per level and dark theme applied -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>💣 Hack Escape – PassQuest</title>
+  <meta charset="UTF-8">
+  <title>Memory Builder</title>
   <style>
-    :root {
-      --bg-color: #121212;
-      --text-color: #ffffff;
-      --primary-color: #4a90e2;
-      --accent-color: #ff5555;
-    }
-
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-
-    header {
-      background-color: var(--primary-color);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    nav a {
-      color: white;
-      margin-left: 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 3rem auto;
-      padding: 2rem;
-      background: #1e1e1e;
-      border-radius: 10px;
+      background: #121212;
+      color: #ffffff;
       text-align: center;
+      padding: 30px;
     }
-
-    .timer {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: var(--accent-color);
+    h1 {
+      color: #ffca28;
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px #ffca28;
     }
-
-    select, input[type="text"] {
-      padding: 0.6rem;
-      width: 60%;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      border: 1px solid #444;
-      background-color: #2b2b2b;
-      color: white;
-      margin-bottom: 1rem;
-    }
-
-    button {
-      margin-top: 1rem;
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
-      background-color: var(--accent-color);
+    .btn {
+      padding: 12px 20px;
+      background: #1e88e5;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
+      margin: 10px;
     }
-
-    .hint {
-      margin-top: 1rem;
-      font-style: italic;
-      color: #ccc;
+    .btn:hover {
+      background: #1565c0;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 202, 40, 0.3);
+      max-width: 600px;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .word-btn {
+      padding: 10px 15px;
+      background: #424242;
+      border: 2px solid #616161;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    .word-btn:hover {
+      background: #616161;
+      transform: scale(1.1);
+    }
+    .word-btn.selected {
+      background: #ffca28;
+      color: #000;
+    }
+    #message {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 1.2rem;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h2 style="margin: 0; color: white;">PassQuest</h2>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="features.html">Features</a>
-      <a href="games.html">Games</a>
-      <a href="progression.html">Progression</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
-
-  <div class="container">
-    <h1>💣 Hack Escape</h1>
-    <p id="scenario">You’re trapped inside a hacked server room! 🔒 The only way out is to decrypt the system password using clues hidden in the hint below. You have 30 seconds!</p>
-
-    <label for="level">Select Difficulty:</label><br>
-    <select id="level" onchange="setScenarioAndPassword()">
-      <option value="very-easy">Very Easy</option>
-      <option value="easy">Easy</option>
-      <option value="medium">Medium</option>
-      <option value="hard">Hard</option>
-      <option value="very-hard">Very Hard</option>
-    </select>
-
-    <div class="timer" id="timer">⏱️ Time Left: 30s</div>
-    <input type="text" id="answer" placeholder="Enter password here..." />
-    <br>
-    <button onclick="checkAnswer()">Unlock</button>
-    <div class="hint" id="hint"></div>
-    <button onclick="revealPassword()">🔍 Show Password</button>
-    <div class="hint" id="reveal"></div>
-    <button onclick="restartGame()">🔄 Restart Game</button>
+  <h1>🧠 Memory Builder</h1>
+  <div class="card">
+    <p><strong>Level:</strong> <span id="level">Easy</span> | <strong>Score:</strong> <span id="score">0</span> | <strong>Lives:</strong> <span id="lives">3</span></p>
+    <p><strong>Memorize this passphrase:</strong></p>
+    <p id="passphrase" style="font-weight:bold; font-size: 1.2rem;"></p>
+    <p><strong>Time left:</strong> <span id="timer">3</span> seconds</p>
+    <div id="rebuild" class="grid"></div>
+    <p id="message"></p>
+    <button class="btn" onclick="nextPuzzle()">Next</button>
   </div>
 
+  <canvas id="confetti" style="position:fixed; top:0; left:0; pointer-events:none; width:100%; height:100%;"></canvas>
+  <audio id="ding" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.wav" preload="auto"></audio>
+  <audio id="buzz" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-electricity-buzz-955.wav" preload="auto"></audio>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    const scenarios = {
-      'very-easy': "You're locked out of your tablet in a library. It asks for your favorite color and a lucky number.",
-      'easy': "You're in a public WiFi café. The system auto-locks every 30 seconds unless the correct pass is typed.",
-      'medium': "You’re in a digital vault. A password generator is broken, but one backup phrase exists. Use the clues!",
-      'hard': "You’re inside a rogue AI core. It scrambles input unless the master override phrase is entered precisely.",
-      'very-hard': "You're in a blacksite facility. The biometric scan failed. Only a cyber-encrypted master key can save you."
+    const levels = {
+      Easy: [
+        ["Moon", "Walk", "@", "Slow"],
+        ["Rain", "Drop", "#", "Cold"],
+        ["Book", "Read", "$", "Fast"],
+        ["Tree", "Grow", "%", "Tall"],
+        ["Fish", "Swim", "&", "Blue"],
+        ["Fire", "Burn", "!", "Hot"],
+        ["Wind", "Blow", "?", "Wild"],
+        ["Dog", "Bark", "*", "Loud"],
+        ["Cat", "Jump", "^", "High"],
+        ["Snow", "Fall", "=", "Soft"]
+      ],
+      Medium: [
+        ["Rocket", "Lift", "@", "Sky", "3"],
+        ["Lion", "Roar", "#", "Power", "7"],
+        ["Cloud", "Drift", "$", "Peace", "8"],
+        ["River", "Flow", "%", "Quiet", "5"],
+        ["Plane", "Zoom", "&", "Fast", "1"],
+        ["Train", "Move", "!", "Track", "9"],
+        ["Star", "Shine", "?", "Dark", "4"],
+        ["Bee", "Buzz", "*", "Work", "6"],
+        ["Bear", "Growl", "^", "Wild", "2"],
+        ["Frog", "Jump", "=", "Green", "0"]
+      ],
+      Hard: [
+        ["Dragon", "Fly", "@", "Flame", "8", "Wing"],
+        ["Wizard", "Spell", "#", "Magic", "5", "Light"],
+        ["Knight", "Fight", "$", "Sword", "3", "Honor"],
+        ["Alien", "Land", "%", "Mars", "2", "Zone"],
+        ["Pirate", "Sail", "&", "Gold", "7", "Map"],
+        ["Ghost", "Hide", "!", "Fear", "6", "Chill"],
+        ["Robot", "Build", "?", "Code", "9", "AI"],
+        ["Zombie", "Walk", "*", "Night", "4", "Brain"],
+        ["Ninja", "Strike", "^", "Silent", "1", "Dark"],
+        ["Phoenix", "Rise", "=", "Ash", "0", "Rebirth"]
+      ]
     };
 
-    const passwords = {
-      'very-easy': "blue7",
-      'easy': "wifiSafe123",
-      'medium': "Lock3r#Vault",
-      'hard': "AIC0re$X9",
-      'very-hard': "XenoCrypt@2049"
-    };
+    let currentLevel = 'Easy';
+    let score = 0;
+    let lives = 3;
+    let levelIndex = 0;
+    let current = [];
+    let attempt = [];
 
-    const hints = {
-      'very-easy': "Hint: Your tablet wallpaper is a calming ocean blue, and your locker number is 7. Think like your younger self.",
-      'easy': "Hint: You often use 'wifi' in your passwords for hotspots and always feel safer adding 'Safe' followed by your birth year — 123.",
-      'medium': "Hint: You store valuables in a locker. Combine that with the digital vault’s name from the sticker you saw: 'Vault'. Add a symbol in between.",
-      'hard': "Hint: The AI core speaks in riddles. You saw a sticky note saying 'AI Core override = AIC0re$X9'. Could it be that simple?", 
-      'very-hard': "Hint: You remember the codename from a top-secret file: 'XenoCrypt'. The access code had a year: 2049. Add @ like in passwords."
-    };
+    const passEl = document.getElementById("passphrase");
+    const rebuildEl = document.getElementById("rebuild");
+    const messageEl = document.getElementById("message");
+    const timerEl = document.getElementById("timer");
+    const scoreEl = document.getElementById("score");
+    const levelEl = document.getElementById("level");
+    const livesEl = document.getElementById("lives");
+    const ding = document.getElementById("ding");
+    const buzz = document.getElementById("buzz");
+    const confettiCanvas = document.getElementById("confetti");
 
-    let timeLeft = 30;
     let timer;
-    let currentLevel = "easy";
+    let timeLeft = 3;
 
-    function setScenarioAndPassword() {
-      currentLevel = document.getElementById("level").value;
-      document.getElementById("scenario").textContent = scenarios[currentLevel];
-      document.getElementById("hint").textContent = hints[currentLevel];
-      resetTimer();
-    }
+    function nextPuzzle() {
+      if (lives <= 0) {
+        messageEl.textContent = "Game Over. Refresh to try again.";
+        return;
+      }
+      if (levelIndex >= levels[currentLevel].length) {
+        if (currentLevel === 'Easy') {
+          currentLevel = 'Medium';
+        } else if (currentLevel === 'Medium') {
+          currentLevel = 'Hard';
+        } else {
+          messageEl.textContent = "🏆 Congratulations! You finished all levels!";
+          confetti();
+          return;
+        }
+        levelIndex = 0;
+      }
+      attempt = [];
+      rebuildEl.innerHTML = "";
+      messageEl.textContent = "";
+      levelEl.textContent = currentLevel;
+      scoreEl.textContent = score;
+      livesEl.textContent = lives;
 
-    function resetTimer() {
-      clearInterval(timer);
-      timeLeft = 30;
-      document.getElementById("timer").textContent = `⏱️ Time Left: ${timeLeft}s`;
-      document.getElementById("hint").textContent = hints[currentLevel];
-      document.getElementById("answer").disabled = false;
+      current = levels[currentLevel][levelIndex];
+      levelIndex++;
+
+      passEl.textContent = current.join("");
+      timeLeft = 3;
+      timerEl.textContent = timeLeft;
+
       timer = setInterval(() => {
         timeLeft--;
-        document.getElementById("timer").textContent = `⏱️ Time Left: ${timeLeft}s`;
-        if (timeLeft === 0) {
+        timerEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
           clearInterval(timer);
-          alert("💥 Time's up! You failed to escape.");
-          document.getElementById("answer").disabled = true;
+          passEl.textContent = "";
+          showButtons();
         }
       }, 1000);
     }
 
+    function showButtons() {
+      const shuffled = [...current].sort(() => Math.random() - 0.5);
+      shuffled.forEach(word => {
+        const btn = document.createElement("button");
+        btn.textContent = word;
+        btn.className = "word-btn";
+        btn.onclick = () => {
+          if (!btn.classList.contains("selected")) {
+            btn.classList.add("selected");
+            attempt.push(word);
+            checkAnswer();
+          }
+        };
+        rebuildEl.appendChild(btn);
+      });
+    }
+
     function checkAnswer() {
-      const input = document.getElementById("answer").value;
-      if (input === passwords[currentLevel]) {
-        clearInterval(timer);
-        alert("✅ Access granted! You’ve escaped the hack zone!");
-        document.getElementById("answer").disabled = true;
-      } else {
-        alert("❌ Incorrect! Try again quickly!");
+      if (attempt.length === current.length) {
+        if (attempt.join("") === current.join("")) {
+          score += 10;
+          messageEl.textContent = "✅ Correct!";
+          ding.play();
+          confetti({ spread: 70, origin: { y: 0.6 } });
+        } else {
+          lives--;
+          messageEl.textContent = "❌ Wrong. Try the next one.";
+          buzz.play();
+        }
       }
     }
 
     window.onload = () => {
-      setScenarioAndPassword();
+      nextPuzzle();
     };
-
-    function revealPassword() {
-      document.getElementById("reveal").textContent = `🔓 Password: ${passwords[currentLevel]}`;
-    }
-
-    function restartGame() {
-      document.getElementById("answer").value = "";
-      document.getElementById("reveal").textContent = "";
-      setScenarioAndPassword();
-    }
-  // Optional: Play sound when access granted or denied
-  const successSound = new Audio('success.mp3');
-  const failSound = new Audio('fail.mp3');
-
-  function checkAnswer() {
-    const input = document.getElementById("answer").value;
-    if (input === passwords[currentLevel]) {
-      clearInterval(timer);
-      successSound.play();
-      alert("✅ Access granted! You’ve escaped the hack zone!");
-      document.getElementById("answer").disabled = true;
-    } else {
-      failSound.play();
-      alert("❌ Incorrect! Try again quickly!");
-    }
-  }
-
-  // Optional story intro
-  window.onload = () => {
-    alert("🕵️ Welcome Agent. Each level represents a case. Your task is to decipher the correct password using the hint and escape in 30 seconds.");
-    setScenarioAndPassword();
-  };
-</script>
+  </script>
 </body>
 </html>
